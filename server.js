@@ -14,9 +14,9 @@ const io = new Server(server, {
 });
 
 // Simple health check route
-app.get("/", (req, res) => {
-  res.send("Socket server is running!");
-});
+// app.get("/", (req, res) => {
+//   res.send("Socket server is running!");
+// });
 
 // Middleware
 app.use(cors());
@@ -159,7 +159,7 @@ io.on("connection", (socket) => {
   });
 });
 
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 5000;
 server.listen(PORT, "0.0.0.0", () => {
   console.log(`Server running on port ${PORT}`);
 });
