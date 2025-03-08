@@ -14,9 +14,9 @@ const io = new Server(server, {
 });
 
 // Simple health check route
-// app.get("/", (req, res) => {
-//   res.send("Socket server is running!");
-// });
+app.get("/", (req, res) => {
+  res.send("Socket server is running!");
+});
 
 // Middleware
 app.use(cors());
