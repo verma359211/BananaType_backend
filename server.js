@@ -8,7 +8,7 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: "https://bananatype.vercel.app/", // Frontend URL
+    origin: process.env.CLIENT_URL, // Frontend URL
     methods: ["GET", "POST"],
   },
 });
