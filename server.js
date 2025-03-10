@@ -57,7 +57,7 @@ io.on("connection", (socket) => {
     rooms[roomId].players[socket.id] = {
       typedText: "",
       wpm: 0,
-      accuracy: 100,
+      accuracy: 0,
     };
 
     socket.join(roomId);
@@ -66,7 +66,7 @@ io.on("connection", (socket) => {
     // Notify the creator that the room has been created,
     // and send back the players list so the admin's state updates.
     socket.emit("roomCreated", { roomId, isAdmin: true, players: rooms[roomId].players });
-    
+    console.log(rooms);
     // Broadcast an update of the leaderboard to everyone in the room
     io.to(roomId).emit("updateLeaderboard", { players: rooms[roomId].players });
   });
@@ -97,16 +97,27 @@ io.on("connection", (socket) => {
     
     // Broadcast updated player list to everyone in the room
     io.to(roomId).emit("playerJoined", { players: rooms[roomId].players });
+    // console.log("After player is added",players);
+    console.log(rooms);
   });
 
   // Update player's progress (typing updates)
-  socket.on("updateProgress", ({ roomId, typedText }) => {
-    if (rooms[roomId] && rooms[roomId].players[socket.id]) {
-      rooms[roomId].players[socket.id].typedText = typedText;
-      // Broadcast updated leaderboard to all players in the room
-      io.to(roomId).emit("updateLeaderboard", { players: rooms[roomId].players });
-    }
-  });
+  socket.on("updateProgress", ({ roomId, typedText, accuracy, wpm }) => {
+		if (rooms[roomId] && rooms[roomId].players[socket.id]) {
+			rooms[roomId].players[socket.id].typedText = typedText;
+
+			rooms[roomId].players[socket.id].accuracy = accuracy;
+
+			rooms[roomId].players[socket.id].wpm = wpm;
+
+			// Broadcast updated leaderboard to all players in the room
+			io.to(roomId).emit("updateLeaderboard", {
+				players: rooms[roomId].players,
+			});
+			console.log(rooms[roomId].players);
+			// console.log("After player is updated", players);
+		}
+	});
 
   // Start the typing test (admin only)
   socket.on("startTest", ({ roomId }) => {
