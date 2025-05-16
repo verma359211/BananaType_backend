@@ -149,10 +149,10 @@ io.on("connection", (socket) => {
   // Start the typing test (admin only)
   socket.on("startTest", ({ roomId }) => {
     if (!rooms[roomId]) return;
-    if (rooms[roomId].admin !== socket.id) {
-      socket.emit("errorMessage", "Only admin can start the test");
-      return;
-    }
+    // if (rooms[roomId].admin !== socket.id) {
+    //   socket.emit("errorMessage", "Only admin can start the test");
+    //   return;
+    // }
     if (rooms[roomId]) {
       Object.keys(rooms[roomId].players).forEach((playerId) => {
         rooms[roomId].players[playerId].wpm = 0;
