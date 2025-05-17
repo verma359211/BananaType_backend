@@ -10,6 +10,7 @@ const io = new Server(server, {
   cors: {
     origin: process.env.CLIENT_URL, // Frontend URL
     methods: ["GET", "POST"],
+    credentials: true,
   },
 });
 
@@ -19,7 +20,12 @@ app.get("/", (req, res) => {
 });
 
 // Middleware
-app.use(cors());
+app.use(
+ cors({
+  origin: process.env.CLIENT_URL,
+  methods: ["GET","POST"],
+  credentials: true,
+}));
 app.use(express.json());
 
 // In-memory store for rooms and players
